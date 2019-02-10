@@ -1115,6 +1115,8 @@ StepTypesJumptable:
 	dw StepFunction_17              ; 17
 	dw StepFunction_Delete          ; 18
 	dw StepFunction_SkyfallTop      ; 19
+	dw StepFunction_NPCDiagonalStairs    ; 1a
+	dw StepFunction_PlayerDiagonalStairs ; 1b
 	assert_table_length NUM_STEP_TYPES
 
 WaitStep_InPlace:
@@ -1208,6 +1210,77 @@ StepFunction_PlayerJump:
 	ld hl, OBJECT_STEP_TYPE
 	add hl, bc
 	ld [hl], STEP_TYPE_FROM_MOVEMENT
+	ret
+
+StepFunction_NPCDiagonalStairs:
+	ret
+
+StepFunction_PlayerDiagonalStairs:
+	call ObjectStep_AnonJumptable
+.anon_dw
+	dw .InitHorizontal1
+	dw .StepHorizontal
+	dw .InitHorizontal2
+	dw .StepHorizontal
+	dw .InitVertical
+	dw .StepVertical
+
+.InitHorizontal2:
+	call GetNextTile
+.InitHorizontal1:
+	ld hl, wPlayerStepFlags
+	set PLAYERSTEP_START_F, [hl]
+	call ObjectStep_IncAnonJumptableIndex
+.StepHorizontal:
+	call UpdateDiagonalStairsPosition
+	call UpdatePlayerStep
+	ld hl, OBJECT_STEP_DURATION
+	add hl, bc
+	dec [hl]
+	ret nz
+	call CopyCoordsTileToLastCoordsTile
+	ld hl, OBJECT_FLAGS2
+	add hl, bc
+	res OVERHEAD_F, [hl]
+	ld hl, wPlayerStepFlags
+	set PLAYERSTEP_STOP_F, [hl]
+	set PLAYERSTEP_MIDAIR_F, [hl]
+	jp ObjectStep_IncAnonJumptableIndex
+
+.InitVertical:
+	ld hl, OBJECT_ACTION
+	add hl, bc
+	ld [hl], OBJECT_ACTION_STAND
+
+; If you start on the bottom half of a block, you go up;
+; if you start on the top half, you go down.
+	ld a, [wPlayerMetatileY]
+	and a
+	ld a, DOWN
+	jr z, .got_dir
+	ld a, UP
+.got_dir
+	ld hl, OBJECT_WALKING
+	add hl, bc
+	ld [hl], a
+
+	call GetNextTile
+	ld hl, wPlayerStepFlags
+	set PLAYERSTEP_START_F, [hl]
+	call ObjectStep_IncAnonJumptableIndex
+.StepVertical:
+	call UpdateDiagonalStairsPosition
+	call UpdatePlayerStep
+	ld hl, OBJECT_STEP_DURATION
+	add hl, bc
+	dec [hl]
+	ret nz
+	ld hl, wPlayerStepFlags
+	set PLAYERSTEP_STOP_F, [hl]
+	call CopyCoordsTileToLastCoordsTile
+	ld hl, OBJECT_STEP_TYPE
+	add hl, bc
+	ld [hl], STEP_TYPE_FROM_MOVEMENT ; STEP_TYPE_SLEEP?
 	ret
 
 StepFunction_TeleportFrom:
@@ -1847,6 +1920,20 @@ UpdateJumpPosition:
 .y_offsets:
 	db  -4,  -6,  -8, -10, -11, -12, -12, -12
 	db -11, -10,  -9,  -8,  -6,  -4,   0,   0
+
+UpdateDiagonalStairsPosition:
+	ld a, [wPlayerMetatileY]
+	and a
+	ld e, 1
+	jr z, .goingdown
+	ld e, -1
+.goingdown
+	ld hl, OBJECT_SPRITE_Y_OFFSET
+	add hl, bc
+	ld a, [hl]
+	add e
+	ld [hl], a
+	ret
 
 GetPlayerNextMovementIndex:
 ; copy [wPlayerNextMovement] to [wPlayerMovement]

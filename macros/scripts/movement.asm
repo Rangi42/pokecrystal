@@ -73,6 +73,11 @@ MACRO fast_jump_step
 	db movement_fast_jump_step | \1
 ENDM
 
+	const movement_stairs_step
+MACRO stairs_step
+	db movement_stairs_step | \1
+ENDM
+
 DEF const_inc = 1
 
 ; Control
