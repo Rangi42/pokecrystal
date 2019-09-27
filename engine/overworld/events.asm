@@ -132,11 +132,6 @@ EnterMap:
 	ld [wMapStatus], a
 	ret
 
-UnusedWait30Frames: ; unreferenced
-	ld c, 30
-	call DelayFrames
-	ret
-
 HandleMap:
 	call ResetOverworldDelay
 	call HandleMapTimeAndJoypad
@@ -151,8 +146,7 @@ HandleMap:
 	call HandleMapObjects
 	call NextOverworldFrame
 	call HandleMapBackground
-	call CheckPlayerState
-	ret
+	jp CheckPlayerState
 
 MapEvents:
 	ld a, [wMapEventStatus]
@@ -169,16 +163,11 @@ MapEvents:
 	call PlayerEvents
 	call DisableEvents
 	farcall ScriptEvents
-	ret
-
 .no_events:
 	ret
 
-MaxOverworldDelay:
-	db 2
-
 ResetOverworldDelay:
-	ld a, [MaxOverworldDelay]
+	ld a, 2
 	ld [wOverworldDelay], a
 	ret
 
@@ -187,8 +176,7 @@ NextOverworldFrame:
 	and a
 	ret z
 	ld c, a
-	call DelayFrames
-	ret
+	jp DelayFrames
 
 HandleMapTimeAndJoypad:
 	ld a, [wMapEventStatus]
@@ -197,14 +185,12 @@ HandleMapTimeAndJoypad:
 
 	call UpdateTime
 	call GetJoypad
-	call TimeOfDayPals
-	ret
+	jp TimeOfDayPals
 
 HandleMapObjects:
 	farcall HandleNPCStep
 	farcall _HandlePlayerStep
-	call _CheckObjectEnteringVisibleRange
-	ret
+	jp _CheckObjectEnteringVisibleRange
 
 HandleMapBackground:
 	farcall _UpdateSprites
@@ -338,8 +324,7 @@ CheckTileEvent:
 	call CheckStepCountEnabled
 	jr z, .step_count_disabled
 
-	call CountStep
-	ret c
+	jp CountStep
 
 .step_count_disabled
 	call CheckWildEncountersEnabled
@@ -347,7 +332,6 @@ CheckTileEvent:
 
 	call RandomEncounter
 	ret c
-	jr .ok ; pointless
 
 .ok
 	xor a
@@ -392,8 +376,7 @@ CheckTileEvent:
 	ld h, [hl]
 	ld l, a
 	call GetMapScriptsBank
-	call CallScript
-	ret
+	jp CallScript
 
 CheckWildEncounterCooldown::
 	ld hl, wWildEncounterCooldown
@@ -422,8 +405,6 @@ SetMinTwoStepWildEncounterCooldown:
 
 Dummy_CheckEnabledMapEventsBit5:
 	call CheckEnabledMapEventsBit5
-	ret z
-	call SetXYCompareFlags
 	ret
 
 RunSceneScript:
@@ -502,11 +483,6 @@ CheckTimeEvents:
 	ld a, BANK(BugCatchingContestOverScript)
 	ld hl, BugCatchingContestOverScript
 	call CallScript
-	scf
-	ret
-
-.hatch ; unreferenced
-	ld a, PLAYEREVENT_HATCH
 	scf
 	ret
 
@@ -617,8 +593,7 @@ ObjectEventTypeArray:
 	ld h, [hl]
 	ld l, a
 	call GetMapScriptsBank
-	call CallScript
-	ret
+	jp CallScript
 
 .itemball
 	ld hl, MAPOBJECT_SCRIPT_POINTER
@@ -801,12 +776,7 @@ PlayerMovementPointers:
 
 .normal:
 .finish:
-	xor a
-	ld c, a
-	ret
-
 .jump:
-	call SetMinTwoStepWildEncounterCooldown
 	xor a
 	ld c, a
 	ret
@@ -957,11 +927,6 @@ CountStep:
 	scf
 	ret
 
-.whiteout ; unreferenced
-	ld a, PLAYEREVENT_WHITEOUT
-	scf
-	ret
-
 DoRepelStep:
 	ld a, [wRepelEffect]
 	and a
@@ -1024,9 +989,6 @@ PlayerEventScriptPointers:
 InvalidEventScript:
 	end
 
-UnusedPlayerEventScript: ; unreferenced
-	end
-
 HatchEggScript:
 	callasm OverworldHatchEgg
 	end
@@ -1067,15 +1029,44 @@ DeepSandScript:
 .DeepSand:
 	call GetBGMapPlayerOffset
 
-	; assume tiles are standard sand: tile $06, GRAY, bank 0
-	; write footprints $30 and $35 with same palette and bank
+	; assume tiles are standard sand: tile $06, GRAY, bank 0;
+	; write footprints with same palette and bank
+	ld a, [wPlayerState]
+	cp PLAYER_BIKE
+	jr z, .bicycle
+; walking
 	call DisableLCD
 	ld bc, BG_MAP_WIDTH + 1
 	ld [hl], $30
 	add hl, bc
 	ld [hl], $35
 	call EnableLCD
+	jr .done
 
+.bicycle
+	ld a, [wPlayerDirection]
+	and %1100
+	cp 8
+	jr c, .vertical
+; horizontal
+	call DisableLCD
+	ld bc, BG_MAP_WIDTH
+	add hl, bc
+	ld [hl], $46
+	inc hl
+	ld [hl], $46
+	call EnableLCD
+	jr .done
+
+.vertical
+	call DisableLCD
+	ld bc, BG_MAP_WIDTH
+	ld [hl], $47
+	add hl, bc
+	ld [hl], $47
+	call EnableLCD
+
+.done
 	jp UpdateSprites
 
 DeepGrassScript:
@@ -1085,15 +1076,44 @@ DeepGrassScript:
 .DeepGrass:
 	call GetBGMapPlayerOffset
 
-	; assume tiles are standard grass: tile $05, GREEN, bank 0
-	; write footprints $5c and $5d with same palette and bank
+	; assume tiles are standard grass: tile $05, GREEN, bank 0;
+	; write footprints with same palette and bank
+	ld a, [wPlayerState]
+	cp PLAYER_BIKE
+	jr z, .bicycle
+; walking
 	call DisableLCD
 	ld bc, BG_MAP_WIDTH + 1
 	ld [hl], $5c
 	add hl, bc
 	ld [hl], $5d
 	call EnableLCD
+	jr .done
 
+.bicycle
+	ld a, [wPlayerDirection]
+	and %1100
+	cp 8
+	jr c, .vertical
+; horizontal
+	call DisableLCD
+	ld bc, BG_MAP_WIDTH
+	add hl, bc
+	ld [hl], $56
+	inc hl
+	ld [hl], $56
+	call EnableLCD
+	jr .done
+
+.vertical
+	call DisableLCD
+	ld bc, BG_MAP_WIDTH
+	ld [hl], $57
+	add hl, bc
+	ld [hl], $57
+	call EnableLCD
+
+.done
 	jp UpdateSprites
 
 ThinIceScript:
