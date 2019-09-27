@@ -3,10 +3,10 @@ CollisionPermissionTable::
 	table_width 1
 	db LAND_TILE         ; COLL_FLOOR
 	db LAND_TILE         ; COLL_01
-	db LAND_TILE         ; 02
+	db LAND_TILE         ; COLL_DEEP_SAND
 	db LAND_TILE         ; COLL_03
 	db LAND_TILE         ; COLL_04
-	db LAND_TILE         ; 05
+	db LAND_TILE         ; COLL_THIN_ICE
 	db LAND_TILE         ; 06
 	db WALL_TILE         ; COLL_WALL
 	db LAND_TILE         ; COLL_CUT_08
