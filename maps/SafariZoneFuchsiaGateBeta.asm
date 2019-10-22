@@ -7,8 +7,8 @@ SafariZoneFuchsiaGateBeta_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events
-	warp_event  4,  0, SAFARI_ZONE_BETA, 1
-	warp_event  5,  0, SAFARI_ZONE_BETA, 2
+	warp_event  4,  0, NONE, 1
+	warp_event  5,  0, NONE, 2
 	warp_event  4,  7, FUCHSIA_CITY, 7
 	warp_event  5,  7, FUCHSIA_CITY, 7
 
