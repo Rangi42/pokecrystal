@@ -312,12 +312,6 @@ CheckObjectTime::
 	scf
 	ret
 
-CopyMapObjectStruct:: ; unreferenced
-	ldh [hMapObjectIndex], a
-	call GetMapObject
-	call CopyObjectStruct
-	ret
-
 UnmaskCopyMapObjectStruct::
 	ldh [hMapObjectIndex], a
 	call UnmaskObject
@@ -586,15 +580,58 @@ _GetMovementIndex::
 	ld a, h
 	ret
 
-SetVramState_SpriteUpdatesDisabled:: ; unreferenced
-	ld hl, wStateFlags
-	set SPRITE_UPDATES_DISABLED_F, [hl]
+GetBGMapPlayerOffset::
+; hl = {wBGMapAnchor} + BG_MAP_WIDTH * 8 + 8 (player's top-left tile)
+; de = wUnusedMapBuffer
+	ld hl, wBGMapAnchor + 1
+	ld a, [hld] ; a = HIGH({wBGMapAnchor})
+	inc a ; move down 8 rows
+	and HIGH(vBGMap0 + BG_MAP_WIDTH * BG_MAP_HEIGHT - 1) ; wrap vertically
+	ld l, [hl]
+	ld h, a
+	ld a, l
+	add a, 8 ; move right 8 rows
+	; restore "row" bits (upper 3)
+	xor l
+	and BG_MAP_WIDTH - 1
+	xor l
+	ld l, a
+	ld de, wUnusedMapBuffer
 	ret
 
-ResetVramState_SpriteUpdatesDisabled:: ; unreferenced
-	ld hl, wStateFlags
-	res SPRITE_UPDATES_DISABLED_F, [hl]
+PlaceFootprints::
+	ld hl, wUnusedMapBuffer
+.continue
+	ld a, [hl]
+	and a
+	ret z
+	ld c, a
+	xor a
+	ld [hli], a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, c
+	ld [de], a
+	jr .continue
+
+QueueVolatileTiles::
+; assume de started out as wUnusedMapBuffer, and hl is an offset into wBGMapAnchor
+	ld [de], a
+	inc de
+	ld a, l
+	ld [de], a
+	inc de
+	ld a, h
+	ld [de], a
+	inc de
 	ret
+
+FinishVolatileTiles::
+	xor a
+	ld [de], a
+	; fallthrough
 
 UpdateSprites::
 	ld a, [wStateFlags]
