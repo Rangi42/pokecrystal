@@ -106,6 +106,7 @@ VBlank_Normal::
 	call Serve2bppRequest
 	call Serve1bppRequest
 	call AnimateTileset
+	call PlaceFootprints
 
 .done
 
