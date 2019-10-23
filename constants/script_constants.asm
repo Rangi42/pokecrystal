@@ -92,9 +92,6 @@ DEF RETVAR_EXECUTE EQU 2 << 6
 	const PLAYEREVENT_WHITEOUT
 	const PLAYEREVENT_HATCH
 	const PLAYEREVENT_JOYCHANGEFACING
-	const PLAYEREVENT_DEEP_SAND
-	const PLAYEREVENT_THIN_ICE
-	const PLAYEREVENT_DEEP_GRASS
 DEF NUM_PLAYER_EVENTS EQU const_value
 
 ; PlayerMovementPointers indexes (see engine/overworld/events.asm)
