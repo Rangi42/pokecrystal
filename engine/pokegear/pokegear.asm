@@ -725,6 +725,7 @@ PokegearMap_UpdateCursorPosition:
 	ret
 
 TownMap_GetKantoLandmarkLimits:
+; TODO: Change these to the last and first landmarks of the Kanto region, depending on postgame.
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_HALL_OF_FAME_F, a
 	jr z, .not_hof
