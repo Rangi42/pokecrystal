@@ -10,8 +10,6 @@ Pokecenter2F_MapScripts:
 	scene_script Pokecenter2FLeaveTradeCenterScene,      SCENE_POKECENTER2F_LEAVE_TRADE_CENTER
 	scene_script Pokecenter2FLeaveColosseumScene,        SCENE_POKECENTER2F_LEAVE_COLOSSEUM
 	scene_script Pokecenter2FLeaveTimeCapsuleScene,      SCENE_POKECENTER2F_LEAVE_TIME_CAPSULE
-	scene_script Pokecenter2FLeaveMobileTradeRoomScene,  SCENE_POKECENTER2F_LEAVE_MOBILE_TRADE_ROOM
-	scene_script Pokecenter2FLeaveMobileBattleRoomScene, SCENE_POKECENTER2F_LEAVE_MOBILE_BATTLE_ROOM
 
 	def_callbacks
 
@@ -35,14 +33,6 @@ Pokecenter2FLeaveColosseumScene:
 
 Pokecenter2FLeaveTimeCapsuleScene:
 	sdefer Script_LeftTimeCapsule
-	end
-
-Pokecenter2FLeaveMobileTradeRoomScene:
-	sdefer Script_LeftMobileTradeRoom
-	end
-
-Pokecenter2FLeaveMobileBattleRoomScene:
-	sdefer Script_LeftMobileBattleRoom
 	end
 
 Pokecenter2F_AppearMysteryGiftDeliveryGuy:
@@ -73,13 +63,6 @@ LinkReceptionistScript_Trade:
 	writetext Text_TradeReceptionistIntro
 	yesorno
 	iffalse .Cancel
-	special CheckMobileAdapterStatusSpecial
-	iffalse .NoMobile
-	writetext Text_TradeReceptionistMobile
-	special AskMobileOrCable
-	iffalse .Cancel
-	ifequal $1, .Mobile
-.NoMobile:
 	special SetBitsForLinkTradeRequest
 	writetext Text_PleaseWait
 	special WaitForLinkedFriend
@@ -134,40 +117,6 @@ LinkReceptionistScript_Trade:
 	closetext
 	end
 
-.Mobile:
-	scall .Mobile_TrySave
-	iftrue .Mobile_Abort
-	scall BattleTradeMobile_WalkIn
-	warpcheck
-	end
-
-.Mobile_Abort:
-	end
-
-.Mobile_TrySave:
-	writetext Text_MustSaveGame
-	yesorno
-	iffalse .Mobile_DidNotSave
-	special TryQuickSave
-	iffalse .Mobile_DidNotSave
-	special Function1011f1
-	writetext Text_PleaseComeIn
-	waitbutton
-	closetext
-	setval FALSE
-	end
-
-.Mobile_DidNotSave:
-	writetext Text_PleaseComeAgain
-	closetext
-	setval TRUE
-	end
-
-BattleTradeMobile_WalkIn:
-	applymovementlasttalked Pokecenter2FMobileMobileMovementData_ReceptionistWalksUpAndLeft_LookDown
-	applymovement PLAYER, Pokecenter2FMobileMovementData_PlayerWalksIntoMobileBattleRoom
-	end
-
 LinkReceptionistScript_Battle:
 	checkevent EVENT_GAVE_MYSTERY_EGG_TO_ELM
 	iffalse Script_BattleRoomClosed
@@ -175,13 +124,6 @@ LinkReceptionistScript_Battle:
 	writetext Text_BattleReceptionistIntro
 	yesorno
 	iffalse .Cancel
-	special CheckMobileAdapterStatusSpecial
-	iffalse .NoMobile
-	writetext Text_BattleReceptionistMobile
-	special AskMobileOrCable
-	iffalse .Cancel
-	ifequal $1, .Mobile
-.NoMobile:
 	special SetBitsForBattleRequest
 	writetext Text_PleaseWait
 	special WaitForLinkedFriend
@@ -234,57 +176,6 @@ LinkReceptionistScript_Battle:
 	special WaitForOtherPlayerToExit
 .Cancel:
 	closetext
-	end
-
-.Mobile:
-	scall .SelectThreeMons
-	iffalse .Mobile_Abort
-	scall .Mobile_TrySave
-	iftrue .Mobile_Abort
-	scall BattleTradeMobile_WalkIn
-	warpcheck
-	end
-
-.Mobile_Abort:
-	end
-
-.Mobile_TrySave:
-	writetext Text_MustSaveGame
-	yesorno
-	iffalse .Mobile_DidNotSave
-	special Function103780
-	iffalse .Mobile_DidNotSave
-	special Function1011f1
-	writetext Text_PleaseComeIn
-	waitbutton
-	closetext
-	setval FALSE
-	end
-
-.Mobile_DidNotSave:
-	writetext Text_PleaseComeAgain
-	closetext
-	setval TRUE
-	end
-
-.SelectThreeMons:
-	special Mobile_SelectThreeMons
-	iffalse .Mobile_DidNotSelect
-	ifequal $1, .Mobile_OK
-	ifequal $2, .Mobile_OK
-	ifequal $3, .Mobile_InvalidParty
-	sjump .Mobile_DidNotSelect
-
-.Mobile_InvalidParty:
-	writetext Text_BrokeStadiumRules
-	waitbutton
-.Mobile_DidNotSelect:
-	closetext
-	setval FALSE
-	end
-
-.Mobile_OK:
-	setval TRUE
 	end
 
 Script_TimeCapsuleClosed:
@@ -377,37 +268,11 @@ Script_LeftCableTradeCenter:
 	setmapscene TRADE_CENTER, SCENE_TRADECENTER_INITIALIZE
 	end
 
-Script_LeftMobileTradeRoom:
-	special Function101220
-	scall Script_WalkOutOfMobileTradeRoom
-	setscene SCENE_POKECENTER2F_CHECK_MYSTERY_GIFT
-	setmapscene MOBILE_TRADE_ROOM, SCENE_MOBILETRADEROOM_INITIALIZE
-	end
-
-Script_WalkOutOfMobileTradeRoom:
-	applymovement POKECENTER2F_TRADE_RECEPTIONIST, Pokecenter2FMobileMovementData_ReceptionistWalksUpAndLeft
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerWalksOutOfMobileRoom
-	applymovement POKECENTER2F_TRADE_RECEPTIONIST, Pokecenter2FMobileMovementData_ReceptionistWalksRightAndDown
-	end
-
 Script_LeftCableColosseum:
 	special WaitForOtherPlayerToExit
 	scall Script_WalkOutOfLinkBattleRoom
 	setscene SCENE_POKECENTER2F_CHECK_MYSTERY_GIFT
 	setmapscene COLOSSEUM, SCENE_COLOSSEUM_INITIALIZE
-	end
-
-Script_LeftMobileBattleRoom:
-	special Function101220
-	scall Script_WalkOutOfMobileBattleRoom
-	setscene SCENE_POKECENTER2F_CHECK_MYSTERY_GIFT
-	setmapscene MOBILE_BATTLE_ROOM, SCENE_MOBILEBATTLEROOM_INITIALIZE
-	end
-
-Script_WalkOutOfMobileBattleRoom:
-	applymovement POKECENTER2F_BATTLE_RECEPTIONIST, Pokecenter2FMobileMovementData_ReceptionistWalksUpAndLeft
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerWalksOutOfMobileRoom
-	applymovement POKECENTER2F_BATTLE_RECEPTIONIST, Pokecenter2FMobileMovementData_ReceptionistWalksRightAndDown
 	end
 
 Pokecenter2F_CheckGender:
@@ -625,12 +490,6 @@ Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight:
 	turn_head RIGHT
 	step_end
 
-Pokecenter2FMobileMobileMovementData_ReceptionistWalksUpAndLeft_LookDown:
-	slow_step UP
-	slow_step LEFT
-	turn_head DOWN
-	step_end
-
 Pokecenter2FMovementData_ReceptionistStepsLeftLooksDown:
 	slow_step LEFT
 	turn_head DOWN
@@ -663,13 +522,6 @@ Pokecenter2FMovementData_PlayerTakesTwoStepsUp:
 	step_end
 
 Pokecenter2FMovementData_PlayerTakesOneStepUp:
-	step UP
-	step_end
-
-Pokecenter2FMobileMovementData_PlayerWalksIntoMobileBattleRoom:
-	step UP
-	step UP
-	step RIGHT
 	step UP
 	step_end
 
@@ -722,24 +574,6 @@ Pokecenter2FMovementData_ReceptionistStepsRightLooksDown_3:
 Pokecenter2FMovementData_ReceptionistStepsLeftLooksRight:
 	slow_step LEFT
 	turn_head RIGHT
-	step_end
-
-Pokecenter2FMobileMovementData_ReceptionistWalksUpAndLeft:
-	slow_step UP
-	slow_step LEFT
-	turn_head RIGHT
-	step_end
-
-Pokecenter2FMovementData_PlayerWalksOutOfMobileRoom:
-	step DOWN
-	step LEFT
-	step DOWN
-	step DOWN
-	step_end
-
-Pokecenter2FMobileMovementData_ReceptionistWalksRightAndDown:
-	slow_step RIGHT
-	slow_step DOWN
 	step_end
 
 Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight:
@@ -795,27 +629,6 @@ Pokecenter2FMovementData_ReceptionistStepsRightLooksLeft_2:
 	slow_step RIGHT
 	turn_head LEFT
 	step_end
-
-Text_BattleReceptionistMobile:
-	text "Would you like to"
-	line "battle over a GAME"
-
-	para "LINK cable or by"
-	line "mobile phone?"
-	done
-
-Text_TradeReceptionistMobile:
-	text "Would you like to"
-	line "trade over a GAME"
-
-	para "LINK cable or by"
-	line "mobile phone?"
-	done
-
-Text_ThisWayToMobileRoom: ; unreferenced
-	text "This way to the"
-	line "MOBILE ROOM."
-	done
 
 Text_BattleReceptionistIntro:
 	text "Welcome to CABLE"
@@ -999,26 +812,6 @@ Text_LikeTheLook:
 	line "style look to you?"
 	done
 
-Text_BrokeStadiumRules:
-	text "Excuse me!"
-
-	para "For STADIUM rules,"
-	line "please bring six"
-
-	para "different #MON,"
-	line "excluding EGGS."
-
-	para "The six #MON"
-	line "must be different."
-
-	para "Also, they must"
-	line "not be holding"
-	cont "identical items."
-
-	para "Please come back"
-	line "when you're ready."
-	done
-
 Pokecenter2F_MapEvents:
 	db 0, 0 ; filler
 
@@ -1027,8 +820,6 @@ Pokecenter2F_MapEvents:
 	warp_event  5,  0, TRADE_CENTER, 1
 	warp_event  9,  0, COLOSSEUM, 1
 	warp_event 13,  2, TIME_CAPSULE, 1
-	warp_event  6,  0, MOBILE_TRADE_ROOM, 1
-	warp_event 10,  0, MOBILE_BATTLE_ROOM, 1
 
 	def_coord_events
 
