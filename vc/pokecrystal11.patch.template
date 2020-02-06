@@ -281,9 +281,9 @@ Address = {hex @}
 MemAddress={hex~ hJoyPressed}                                                            
 Fixcode={db NO_INPUT}                                                                 
 ConditionType = 0                                                             
-ConditionValueA = {dws_ wWindowStackPointer wWindowStackPointer+1 wMenuJoypad wMenuSelection wMenuCursorY wMapGroup         wMapNumber                wYCoord wXCoord hJoyPressed hJoyPressed hJoyPressed hJoyPressed}  
-ConditionValueB = {dws_ ==                  ==                    ==          ==             ==           ==                ==                        ==      ==      !=          !=          !=          !=         }  
-ConditionValueC = {dws_ 0xaf                0xdf                  NO_INPUT    0x00           0x01         MAPGROUP_CIANWOOD MAP_CIANWOOD_PHOTO_STUDIO 0x04    0x02    PAD_DOWN    PAD_UP      PAD_B       NO_INPUT   }  
+ConditionValueA = {dws_ wWindowStackPointer wWindowStackPointer+1 wMenuJoypad wMenuSelection wMenuCursorY wMapGroup  wMapNumber wYCoord wXCoord hJoyPressed hJoyPressed hJoyPressed hJoyPressed}  
+ConditionValueB = {dws_ ==                  ==                    ==          ==             ==           ==         ==         ==      ==      !=          !=          !=          !=         }  
+ConditionValueC = {dws_ 0xaf                0xdf                  NO_INPUT    0x00           0x01         GROUP_NONE MAP_NONE   0x04    0x02    PAD_DOWN    PAD_UP      PAD_B       NO_INPUT   }  
 
                                                
 ;ROM:BB29C                 call    unk_934       
