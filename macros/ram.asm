@@ -136,7 +136,8 @@ ENDM
 
 MACRO corner_connection_struct
 \1CornerLocation:: dw
-\1CornerBlocks:: ds 3 * 3
+\1CornerBlocksBank:: db
+\1CornerBlocksAddress:: dw
 ENDM
 
 MACRO channel_struct
