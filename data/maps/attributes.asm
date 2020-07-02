@@ -41,7 +41,7 @@ MACRO connection
 		endc
 
 		if "\1" === "north"
-			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (NORTH | SOUTH | WEST | EAST)
+			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (NORTH | SOUTH | WEST | EAST | NORTHEAST | NORTHWEST | SOUTHEAST | SOUTHWEST)
 				fail "Invalid order for 'connection' (must be north, south, west, east)"
 			endc
 			DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= NORTH
@@ -56,7 +56,7 @@ MACRO connection
 			endc
 
 		elif "\1" === "south"
-			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (SOUTH | WEST | EAST)
+			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (SOUTH | WEST | EAST | NORTHEAST | NORTHWEST | SOUTHEAST | SOUTHWEST)
 				fail "Invalid order for 'connection' (must be north, south, west, east)"
 			endc
 			DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= SOUTH
@@ -71,7 +71,7 @@ MACRO connection
 			endc
 
 		elif "\1" === "west"
-			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (WEST | EAST)
+			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (WEST | EAST | NORTHEAST | NORTHWEST | SOUTHEAST | SOUTHWEST)
 				fail "Invalid order for 'connection' (must be north, south, west, east)"
 			endc
 			DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= WEST
@@ -86,7 +86,7 @@ MACRO connection
 			endc
 
 		elif "\1" === "east"
-			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & EAST
+			if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (EAST | NORTHEAST | NORTHWEST | SOUTHEAST | SOUTHWEST)
 				fail "Invalid order for 'connection' (must be north, south, west, east)"
 			endc
 			DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= EAST
@@ -115,10 +115,56 @@ MACRO connection
 	endc
 ENDM
 
+MACRO corner_connection
+;\1: direction
+;\2-\10: 3x3 blocks (optional, so they can be INCBIN'ed instead)
+	if "\1" === "northeast"
+		if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (NORTHEAST | NORTHWEST | SOUTHEAST | SOUTHWEST)
+			fail "Invalid order for 'corner_connection' (must be northeast, northwest, southeast, southwest)"
+		endc
+		DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= NORTHEAST
+		DEF _off = CURRENT_MAP_WIDTH + MAP_CONNECTION_PADDING_WIDTH
+
+	elif "\1" === "northwest"
+		if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (NORTHWEST | SOUTHEAST | SOUTHWEST)
+			fail "Invalid order for 'corner_connection' (must be northeast, northwest, southeast, southwest)"
+		endc
+		DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= NORTHWEST
+		DEF _off = 0
+
+	elif "\1" === "southeast"
+		if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (SOUTHEAST | SOUTHWEST)
+			fail "Invalid order for 'corner_connection' (must be northeast, northwest, southeast, southwest)"
+		endc
+		DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= SOUTHEAST
+		DEF _off = (CURRENT_MAP_WIDTH + MAP_CONNECTION_PADDING_WIDTH * 2) * (CURRENT_MAP_HEIGHT + MAP_CONNECTION_PADDING_WIDTH) + CURRENT_MAP_WIDTH + MAP_CONNECTION_PADDING_WIDTH
+
+	elif "\1" === "southwest"
+		if MAP_CONNECTIONS_{CURRENT_MAP_ID} & SOUTHWEST
+			fail "Invalid order for 'corner_connection' (must be northeast, northwest, southeast, southwest)"
+		endc
+		DEF MAP_CONNECTIONS_{CURRENT_MAP_ID} |= SOUTHWEST
+		DEF _off = (CURRENT_MAP_WIDTH + MAP_CONNECTION_PADDING_WIDTH * 2) * (CURRENT_MAP_HEIGHT + MAP_CONNECTION_PADDING_WIDTH)
+
+	else
+		fail "Invalid direction for 'corner_connection'."
+	endc
+
+	dw wOverworldMapBlocks + _off
+	if _NARG > 1
+		shift
+		db \1, \2, \3, \4, \5, \6, \7, \8, \9
+	endc
+ENDM
+
 
 	map_attributes NewBarkTown, NEW_BARK_TOWN, $05
 	connection west, Route29, ROUTE_29, 0
 	connection east, Route27, ROUTE_27, 0
+	corner_connection northeast, $6a, $70, $6b, $68, $71, $69, $6c, $72, $6d ; cliffs
+	corner_connection northwest, $30, $31, $32, $34, $35, $36, $38, $39, $3a ; water
+	corner_connection southeast, $40, $41, $42, $44, $01, $46, $48, $49, $4a ; fences
+	corner_connection southwest, $5c, $5d, $5e, $60, $61, $62, $64, $65, $66 ; trees
 
 	map_attributes CherrygroveCity, CHERRYGROVE_CITY, $35
 	connection north, Route30, ROUTE_30, 5
