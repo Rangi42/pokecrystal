@@ -2524,6 +2524,11 @@ wSouthMapConnection:: map_connection_struct wSouth
 wWestMapConnection::  map_connection_struct wWest
 wEastMapConnection::  map_connection_struct wEast
 
+wNorthEastMapConnection:: corner_connection_struct wNorthEast
+wNorthWestMapConnection:: corner_connection_struct wNorthWest
+wSouthEastMapConnection:: corner_connection_struct wSouthEast
+wSouthWestMapConnection:: corner_connection_struct wSouthWest
+
 wTileset::
 wTilesetBank:: db
 wTilesetAddress:: dw
@@ -3226,7 +3231,7 @@ wMountMoonSquareSceneID::                         db
 wMobileTradeRoomSceneID::                         db
 wMobileBattleRoomSceneID::                        db
 
-	ds 49
+	ds 5
 
 ; fight counts
 wJackFightCount::    db
