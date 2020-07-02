@@ -62,6 +62,10 @@ DEF NUM_FISHGROUPS EQU const_value - 1
 	const WEST_F
 	const SOUTH_F
 	const NORTH_F
+	const NORTHEAST_F
+	const NORTHWEST_F
+	const SOUTHEAST_F
+	const SOUTHWEST_F
 
 ; wMapConnections
 	const_def
@@ -69,6 +73,10 @@ DEF NUM_FISHGROUPS EQU const_value - 1
 	shift_const WEST
 	shift_const SOUTH
 	shift_const NORTH
+	shift_const NORTHEAST
+	shift_const NORTHWEST
+	shift_const SOUTHEAST
+	shift_const SOUTHWEST
 
 ; SpawnPoints indexes (see data/maps/spawn_points.asm)
 	const_def

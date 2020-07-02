@@ -134,6 +134,11 @@ MACRO map_connection_struct
 \1ConnectionWindow::        dw
 ENDM
 
+MACRO corner_connection_struct
+\1CornerLocation:: dw
+\1CornerBlocks:: ds 3 * 3
+ENDM
+
 MACRO channel_struct
 \1MusicID::           dw
 \1MusicBank::         db
