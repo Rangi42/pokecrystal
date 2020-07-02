@@ -117,7 +117,7 @@ ENDM
 
 MACRO corner_connection
 ;\1: direction
-;\2-\10: 3x3 blocks (optional, so they can be INCBIN'ed instead)
+;\2: pointer to 3x3 blocks
 	if "\1" === "northeast"
 		if MAP_CONNECTIONS_{CURRENT_MAP_ID} & (NORTHEAST | NORTHWEST | SOUTHEAST | SOUTHWEST)
 			fail "Invalid order for 'corner_connection' (must be northeast, northwest, southeast, southwest)"
@@ -151,20 +151,17 @@ MACRO corner_connection
 	endc
 
 	dw wOverworldMapBlocks + _off
-	if _NARG > 1
-		shift
-		db \1, \2, \3, \4, \5, \6, \7, \8, \9
-	endc
+	dba \2
 ENDM
 
 
 	map_attributes NewBarkTown, NEW_BARK_TOWN, $05
 	connection west, Route29, ROUTE_29, 0
 	connection east, Route27, ROUTE_27, 0
-	corner_connection northeast, $6a, $70, $6b, $68, $71, $69, $6c, $72, $6d ; cliffs
-	corner_connection northwest, $30, $31, $32, $34, $35, $36, $38, $39, $3a ; water
-	corner_connection southeast, $40, $41, $42, $44, $01, $46, $48, $49, $4a ; fences
-	corner_connection southwest, $5c, $5d, $5e, $60, $61, $62, $64, $65, $66 ; trees
+	corner_connection northeast, NewBarkTown_NorthEastCorner_Blocks
+	corner_connection northwest, NewBarkTown_NorthWestCorner_Blocks
+	corner_connection southeast, NewBarkTown_SouthEastCorner_Blocks
+	corner_connection southwest, NewBarkTown_SouthWestCorner_Blocks
 
 	map_attributes CherrygroveCity, CHERRYGROVE_CITY, $35
 	connection north, Route30, ROUTE_30, 5

@@ -886,6 +886,11 @@ FillConnectionCorner:
 	ld e, a
 	ld a, [hli]
 	ld d, a
+	ld a, [hli]
+	rst Bankswitch
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	call .FillRow
 	call .NextRow
 	call .FillRow
@@ -2336,7 +2341,7 @@ LoadMapTileset::
 
 DummyEndPredef::
 ; Unused function at the end of PredefPointers.
-rept 16
+rept 11
 	nop
 endr
 	ret
