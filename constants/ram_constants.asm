@@ -141,19 +141,20 @@ DEF INIT_MON_LIST        EQU 5
 
 ; wTimeOfDay::
 	const_def
-	shift_const MORN     ; 0
-	shift_const DAY      ; 1
-	shift_const NITE     ; 2
-	shift_const DARKNESS ; 3
+	shift_const MORN ; 0
+	shift_const DAY  ; 1
+	shift_const NITE ; 2
+	shift_const EVE  ; 3
 DEF NUM_DAYTIMES EQU const_value
 
-DEF ANYTIME EQU MORN | DAY | NITE
+DEF ANYTIME EQU MORN | DAY | EVE | NITE
 
 ; wTimeOfDayPalFlags::
 DEF FORCED_PALSET_F EQU 7
 
 ; wTimeOfDayPalset::
-DEF DARKNESS_PALSET EQU (DARKNESS_F << 6) | (DARKNESS_F << 4) | (DARKNESS_F << 2) | DARKNESS_F
+; Must be different from any in ReplaceTimeOfDayPals.BrightnessLevels
+DEF DARKNESS_PALSET EQU (MORN_F << 6) | (DAY_F << 4) | (EVE_F << 2) | NITE_F
 
 ; wBattleAnimFlags::
 	const_def
