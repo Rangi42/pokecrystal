@@ -22,6 +22,8 @@ ReanchorBGMap_NoOAMUpdate::
 	ret
 
 .ReanchorBGMap:
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hLCDCPointer], a
 	ldh [hBGMapMode], a
