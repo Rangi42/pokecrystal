@@ -62,6 +62,8 @@ SetRAMStateForMobile:
 	call ByteFill
 	ldh a, [rIE]
 	ld [wBGMapBuffer], a
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hMapAnims], a
 	ldh [hLCDCPointer], a
@@ -79,6 +81,8 @@ EnableMobile:
 	ldh [rIF], a
 	ld a, IE_DEFAULT
 	ldh [rIE], a
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hMapAnims], a
 	ldh [hLCDCPointer], a
@@ -5120,7 +5124,7 @@ Function1023c6:
 	ld [wCurPartyMon], a
 	xor a ; REMOVE_PARTY
 	ld [wPokemonWithdrawDepositParameter], a
-	farcall RemoveMonFromPartyOrBox
+	farcall RemoveMonFromParty
 	ld hl, wPartyCount
 	inc [hl]
 	ld a, [hli]

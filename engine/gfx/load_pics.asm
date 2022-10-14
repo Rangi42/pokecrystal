@@ -75,7 +75,15 @@ GetAnimatedFrontpic:
 	ldh [rWBK], a
 	ret
 
-_GetFrontpic:
+PrepareFrontpic:
+	ldh a, [rWBK]
+	push af
+	call _PrepareFrontpic
+	pop af
+	ldh [rWBK], a
+	ret
+
+_PrepareFrontpic:
 	push de
 	call GetBaseData
 	ld a, [wBasePicSize]
@@ -97,7 +105,12 @@ _GetFrontpic:
 	ld de, wDecompressScratch
 	ld c, 7 * 7
 	ldh a, [hROMBank]
-	ld b, a
+	pop hl
+	ret
+
+_GetFrontpic:
+	call _PrepareFrontpic
+	push hl
 	call Get2bpp
 	pop hl
 	ret
