@@ -34,3 +34,7 @@ DEF SPRITE_GFX_LIST_CAPACITY EQU 32 ; see wUsedSprites
 	const ANIM_MON_EGG2
 
 DEF OAM_YCOORD_HIDDEN EQU 160 ; hides an OAM offscreen
+
+; Used to prevent updating the OAM's palette (0-7) during the next anim frame,
+; useful when dynamically applying a palette, such as party menu sprites and overworld fly mon sprites.
+DEF SPRITEOAM_SKIP_PAL_APPLY       EQU -1

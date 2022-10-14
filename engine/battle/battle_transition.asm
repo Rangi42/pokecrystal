@@ -49,6 +49,8 @@ DoBattleTransition:
 	ld [wBGP], a
 	call DmgToCgbBGPals
 	call DelayFrame
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hLCDCPointer], a
 	ldh [hLYOverrideStart], a
@@ -317,6 +319,8 @@ StartTrainerBattle_SetUpForWavyOutro:
 	ldh [rWBK], a
 	call StartTrainerBattle_NextScene
 
+	ld a, JP_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	ld a, LOW(rSCX)
 	ldh [hLCDCPointer], a
 	xor a

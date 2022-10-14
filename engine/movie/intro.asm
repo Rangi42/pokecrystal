@@ -236,6 +236,8 @@ IntroScene5:
 	call Intro_ClearBGPals
 	call ClearSprites
 	call ClearTilemap
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hBGMapMode], a
 	ldh [hLCDCPointer], a
@@ -431,6 +433,8 @@ IntroScene8:
 
 IntroScene9:
 ; Set up the next scene (same bg).
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hLCDCPointer], a
 	call ClearSprites
@@ -504,6 +508,8 @@ IntroScene11:
 	call Intro_ClearBGPals
 	call ClearSprites
 	call ClearTilemap
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hBGMapMode], a
 	ldh [hLCDCPointer], a
@@ -1640,6 +1646,8 @@ Intro_ResetLYOverrides:
 
 	pop af
 	ldh [rWBK], a
+	ld a, JP_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	ld a, LOW(rSCX)
 	ldh [hLCDCPointer], a
 	ret
