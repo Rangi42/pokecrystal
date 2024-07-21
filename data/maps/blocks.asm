@@ -1,3 +1,31 @@
+; work around limitations of tools/scan_includes.c
+DEF XINC EQUS "INC"
+MACRO {XINC}MAPCORNER
+;\1: map file
+;\2: map id
+;\3: direction
+	if "\3" === "northeast"
+		for x, 3
+			{XINC}BIN \1, \2_WIDTH * (x + 1) - 3, 3
+		endr
+	elif "\3" === "northwest"
+		for x, 3
+			{XINC}BIN \1, \2_WIDTH * x, 3
+		endr
+	elif "\3" === "southeast"
+		for x, 3
+			{XINC}BIN \1, \2_WIDTH * (\2_HEIGHT + x - 2) - 3, 3
+		endr
+	elif "\3" === "southwest"
+		for x, 3
+			{XINC}BIN \1, \2_WIDTH * (\2_HEIGHT + x - 3), 3
+		endr
+	else
+		fail "Invalid direction for '{XINC}MAPCORNER'."
+	endc
+ENDM
+
+
 SECTION "Map Blocks 1", ROMX
 
 Route32_Blocks:
@@ -527,13 +555,13 @@ NewBarkTown_Blocks:
 	INCBIN "maps/NewBarkTown.blk"
 
 NewBarkTown_NorthEastCorner_Blocks:
-	db $6a, $70, $6b, $68, $71, $69, $6c, $72, $6d ; cliffs
+	INCMAPCORNER "maps/MahoganyTown.blk", MAHOGANY_TOWN, southwest
 NewBarkTown_NorthWestCorner_Blocks:
-	db $30, $31, $32, $34, $35, $36, $38, $39, $3a ; water
+	INCMAPCORNER "maps/MahoganyTown.blk", MAHOGANY_TOWN, southeast
 NewBarkTown_SouthEastCorner_Blocks:
-	db $40, $41, $42, $44, $01, $46, $48, $49, $4a ; fences
+	INCMAPCORNER "maps/MahoganyTown.blk", MAHOGANY_TOWN, northwest
 NewBarkTown_SouthWestCorner_Blocks:
-	db $5c, $5d, $5e, $60, $61, $62, $64, $65, $66 ; trees
+	INCMAPCORNER "maps/MahoganyTown.blk", MAHOGANY_TOWN, northeast
 
 CherrygroveCity_Blocks:
 	INCBIN "maps/CherrygroveCity.blk"
