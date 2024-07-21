@@ -67,16 +67,17 @@ void scan_file(const char *filename, bool strict) {
 		case 'I':
 		case 'i':
 			/* empty statement between the label and the variable declaration */;
-			// Check that an INCLUDE/INCBIN starts as its own token
+			// Check that an INCLUDE/INCBIN/INCMAPCORNER starts as its own token
 			char before = ptr > contents ? *(ptr - 1) : '\n';
 			if (!isspace((unsigned)before) && before != ':') {
 				break;
 			}
 			bool is_incbin = !strncmp(ptr, "INCBIN", 6) || !strncmp(ptr, "incbin", 6);
 			bool is_include = !strncmp(ptr, "INCLUDE", 7) || !strncmp(ptr, "include", 7);
-			if (is_incbin || is_include) {
-				// Check that an INCLUDE/INCBIN ends as its own token
-				ptr += is_include ? 7 : 6;
+			bool is_incmapcorner = !strncmp(ptr, "INCMAPCORNER", 12);
+			if (is_incbin || is_include || is_incmapcorner) {
+				// Check that an INCLUDE/INCBIN/INCMAPCORNER ends as its own token
+				ptr += is_incmapcorner ? 12 : is_include ? 7 : 6;
 				if (!isspace((unsigned)*ptr) && *ptr != '"') {
 					break;
 				}
@@ -93,7 +94,8 @@ void scan_file(const char *filename, bool strict) {
 						scan_file(include_path, strict);
 					}
 				} else {
-					fprintf(stderr, "%s: no file path after INC%s\n", filename, is_include ? "LUDE" : "BIN");
+					fprintf(stderr, "%s: no file path after INC%s\n", filename,
+						is_incmapcorner ? "MAPCORNER" : is_include ? "LUDE" : "BIN");
 					// Continue to process a comment
 					if (*ptr == ';') {
 						ptr--;
