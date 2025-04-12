@@ -38,7 +38,6 @@ gfx/pokemon/hitmontop/back.2bpp.lz: LZFLAGS += --method 4
 gfx/pokemon/nidoran_f/front.animated.2bpp.lz: LZFLAGS += --method 4
 gfx/pokemon/primeape/front.animated.2bpp.lz: LZFLAGS += --method 4
 gfx/pokemon/scyther/front.animated.2bpp.lz: LZFLAGS += --method 4
-gfx/pokemon/unown_g/front.animated.2bpp.lz: LZFLAGS += --method 4
 gfx/pokemon/voltorb/front.animated.2bpp.lz: LZFLAGS += --method 4
 
 gfx/sgb/gbc_only.2bpp.lz: LZFLAGS = --compressor null --method 1 --align 1

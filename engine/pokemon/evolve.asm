@@ -301,15 +301,6 @@ EvolveAfterBattle_MasterLoop:
 	dec a
 	call SetSeenAndCaughtMon
 
-	ld a, [wTempSpecies]
-	cp UNOWN
-	jr nz, .skip_unown
-
-	ld hl, wTempMonDVs
-	predef GetUnownLetter
-	callfar UpdateUnownDex
-
-.skip_unown
 	pop de
 	pop hl
 	ld a, [wTempMonSpecies]

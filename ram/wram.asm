@@ -731,9 +731,7 @@ wDexArrowCursorPosIndex:: db
 wDexArrowCursorDelayCounter:: db
 wDexArrowCursorBlinkCounter:: db
 wDexSearchSlowpokeFrame:: db
-wUnlockedUnownMode:: db
-wDexCurUnownIndex:: db
-wDexUnownCount:: db
+	ds 3
 wDexConvertedMonType:: db ; mon type converted from dex search mon type
 wDexListingScrollOffsetBackup:: db
 wDexListingCursorBackup:: db
@@ -1950,13 +1948,6 @@ wWhichBoxToPrint:: db
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
-; Unown printing
-wPrintedUnownTileSource:: ds 1 tiles
-wPrintedUnownTileDest:: ds 1 tiles
-
-
-SECTION UNION "Miscellaneous WRAM 1", WRAMX
-
 ; trainer HUD data
 	ds 1
 wPlaceBallsDirection:: db
@@ -2656,7 +2647,7 @@ wForcedSwitch:: db
 
 wTrainerClass:: db
 
-wUnownLetter:: db
+	ds 1 ; unused
 
 wMoveSelectionMenuType:: db
 
@@ -2959,7 +2950,7 @@ wCurTimeOfDay:: db
 wSecretID:: dw
 wStatusFlags::
 ; bit 0: pokedex
-; bit 1: unown dex
+; bit 1: unused
 ; bit 2: flash
 ; bit 3: caught pokerus
 ; bit 4: rocket signal
@@ -3330,9 +3321,7 @@ wEndPokedexCaught::
 wPokedexSeen:: flag_array NUM_POKEMON
 wEndPokedexSeen::
 
-wUnownDex:: ds NUM_UNOWN
-wUnlockedUnowns:: db
-wFirstUnownSeen:: db
+	ds 28 ; unused
 
 wDayCareMan::
 ; bit 7: active
@@ -3400,8 +3389,7 @@ wPokeAnimStruct::
 wPokeAnimSceneIndex:: db
 wPokeAnimPointer:: dw
 wPokeAnimSpecies:: db
-wPokeAnimUnownLetter:: db
-wPokeAnimSpeciesOrUnown:: db
+	ds 2 ; unused
 wPokeAnimGraphicStartTile:: db
 wPokeAnimCoord:: dw
 wPokeAnimFrontpicHeight:: db
