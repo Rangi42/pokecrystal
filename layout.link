@@ -196,8 +196,6 @@ ROMX $48
 	"Pic Pointers"
 	"Pics 1"
 ROMX $49
-	org $4000
-	"Unown Pic Pointers"
 	"Pics 2"
 ROMX $4a
 	"Trainer Pic Pointers"
@@ -297,7 +295,6 @@ ROMX $73
 ROMX $74
 	"Pokedex Entries 193-251"
 ROMX $77
-	"Unown Font"
 	"Print Party"
 	"Tileset Data 7"
 	"bank77"

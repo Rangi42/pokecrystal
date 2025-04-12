@@ -330,8 +330,6 @@ DebugColor_InitScreen:
 	jr nz, .trainer
 
 ; mon
-	ld a, UNOWN_A
-	ld [wUnownLetter], a
 	call GetPokemonName
 	hlcoord 4, 1
 	call PlaceString
