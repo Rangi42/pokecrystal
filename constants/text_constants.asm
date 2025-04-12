@@ -43,6 +43,3 @@ DEF TEXTBOX_FRAME_TILES EQU 6
 ; character sets (see charmap.asm)
 DEF FIRST_REGULAR_TEXT_CHAR     EQU $60
 DEF FIRST_HIRAGANA_DAKUTEN_CHAR EQU $20
-
-; gfx/font/unown_font.png
-DEF FIRST_UNOWN_CHAR EQU $40

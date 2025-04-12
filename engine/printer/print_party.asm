@@ -210,16 +210,10 @@ PrintPartyMonPage1:
 	ld a, [wTempMonMoves + 0]
 	call PlaceMoveNameString
 	call PlaceGenderAndShininess
-	ld hl, wTempMonDVs
-	predef GetUnownLetter
 	ld hl, wBoxAlignment
 	xor a
 	ld [hl], a
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr z, .got_alignment
 	inc [hl]
-.got_alignment
 	hlcoord 0, 0
 	call _PrepMonFrontpic
 	call WaitBGMap
