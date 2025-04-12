@@ -105,12 +105,6 @@ OverworldTownMap:
 	call ExitAllMenus
 	ret
 
-UnownPrinter:
-	call FadeToMenu
-	farcall _UnownPrinter
-	call ExitAllMenus
-	ret
-
 DisplayLinkRecord:
 	call FadeToMenu
 	farcall _DisplayLinkRecord

@@ -53,7 +53,6 @@ CGBLayoutJumptable:
 	dw _CGB_MagnetTrain
 	dw _CGB_PackPals
 	dw _CGB_TrainerCard
-	dw _CGB_PokedexUnownMode
 	dw _CGB_BillsPC
 	dw _CGB_UnownPuzzle
 	dw _CGB_GamefreakLogo
@@ -347,26 +346,6 @@ _CGB_Unknown: ; unreferenced
 
 BillsPCOrangePalette:
 INCLUDE "gfx/pc/orange.pal"
-
-_CGB_PokedexUnownMode:
-	ld de, wBGPals1
-	ld a, PREDEFPAL_POKEDEX
-	call GetPredefPal
-	call LoadHLPaletteIntoDE
-	ld a, [wCurPartySpecies]
-	call GetMonPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	call WipeAttrmap
-	hlcoord 7, 5, wAttrmap
-	lb bc, 7, 7
-	ld a, $1 ; mon palette
-	call FillBoxCGB
-	call InitPartyMenuOBPals
-	call ApplyAttrmap
-	call ApplyPals
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	ret
 
 _CGB_SlotMachine:
 	ld hl, SlotMachinePals

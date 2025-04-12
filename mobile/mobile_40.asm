@@ -6416,23 +6416,6 @@ Function102d48:
 	ld [hl], BASE_HAPPINESS
 
 .asm_102d6d
-	ld a, [wTempSpecies]
-	cp UNOWN
-	jr nz, .asm_102d98
-	ld a, [wcd4c]
-	dec a
-	ld bc, PARTYMON_STRUCT_LENGTH
-	ld hl, wPartyMon1DVs
-	call AddNTimes
-	predef GetUnownLetter
-	farcall UpdateUnownDex
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .asm_102d98
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
-
-.asm_102d98
 	and a
 	ret
 

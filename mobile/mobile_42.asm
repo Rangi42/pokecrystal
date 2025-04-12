@@ -197,12 +197,10 @@ Function1080b7:
 	ld [hl], $00
 
 	ld a, [wPlayerTrademonSpecies]
-	ld hl, wPlayerTrademonDVs
 	ld de, vTiles0 tile $30
 	call MobileTradeAnim_GetFrontpic
 
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
 	ld de, vTiles2 tile $31
 	call MobileTradeAnim_GetFrontpic
 
@@ -287,9 +285,6 @@ MobileTradeAnim_ClearBGMap:
 
 MobileTradeAnim_GetFrontpic:
 	push de
-	push af
-	predef GetUnownLetter
-	pop af
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
@@ -299,9 +294,6 @@ MobileTradeAnim_GetFrontpic:
 
 Function108201:
 	push de
-	push af
-	predef GetUnownLetter
-	pop af
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
@@ -520,7 +512,6 @@ MobileTradeAnim_ShowOTMonFromTrade:
 	call MobileTradeAnim_ClearBGMap
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wOTTrademonDVs
 	ld de, vTiles2
 	call Function108201
 	call EnableLCD
@@ -583,7 +574,6 @@ MobileTradeAnim_ShowPlayerMonForGTS:
 	call MobileTradeAnim_DisplayMonToBeSent
 	ld a, [wPlayerTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wPlayerTrademonDVs
 	call Function10898a
 	call DelayFrame
 	ld de, TradeBallGFX
@@ -653,7 +643,6 @@ MobileTradeAnim_ShowOTMonFromGTS:
 	call MobileTradeAnim_ClearBGMap
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wOTTrademonDVs
 	ld de, vTiles2
 	call Function108201
 	call EnableLCD
@@ -704,7 +693,6 @@ MobileTradeAnim_ShowOTMonFromGTS:
 	ld a, %11100100 ; 3,2,1,0
 	call DmgToCgbBGPals
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
 	call Function10898a
 	ld a, [wOTTrademonSpecies]
 	call Function108229
@@ -721,7 +709,6 @@ MobileTradeAnim_GetOddEgg:
 	call MobileTradeAnim_ClearBGMap
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wOTTrademonDVs
 	ld de, vTiles2
 	call Function108201
 	call EnableLCD
@@ -772,7 +759,6 @@ MobileTradeAnim_GetOddEgg:
 	ld a, %11100100 ; 3,2,1,0
 	call DmgToCgbBGPals
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
 	call Function10898a
 	ld a, [wOTTrademonSpecies]
 	call Function108229

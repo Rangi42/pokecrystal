@@ -88,7 +88,6 @@ clean: tidy
 	        -o -name "*.sgb.tilemap" \) \
 	     -delete
 	find gfx/pokemon -mindepth 1 \
-	     ! -path "gfx/pokemon/unown/*" \
 	     \( -name "bitmask.asm" \
 	        -o -name "frames.asm" \
 	        -o -name "front.animated.tilemap" \
@@ -238,15 +237,6 @@ gfx/trainers/%.2bpp: gfx/trainers/%.png gfx/trainers/%.gbcpal
 # Egg does not have a back sprite, so it only uses front.gbcpal
 gfx/pokemon/egg/front.2bpp: gfx/pokemon/egg/front.png gfx/pokemon/egg/front.gbcpal
 gfx/pokemon/egg/front.2bpp: RGBGFXFLAGS += --colors gbc:$(word 2,$^)
-
-# Unown letters share one normal.gbcpal
-unown_pngs := $(wildcard gfx/pokemon/unown_*/front.png) $(wildcard gfx/pokemon/unown_*/back.png)
-$(foreach png, $(unown_pngs),\
-	$(eval $(png:.png=.2bpp): $(png) gfx/pokemon/unown/normal.gbcpal))
-gfx/pokemon/unown_%/back.2bpp: RGBGFXFLAGS += --colors gbc:$(word 2,$^)
-gfx/pokemon/unown_%/front.2bpp: RGBGFXFLAGS += --colors gbc:$(word 2,$^)
-gfx/pokemon/unown/normal.gbcpal: $(subst .png,.gbcpal,$(unown_pngs))
-	tools/gbcpal $(tools/gbcpal) $@ $^
 
 
 ### Misc file-specific graphics rules
