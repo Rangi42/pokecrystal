@@ -46,7 +46,6 @@ SGBLayoutJumptable:
 	dw .SGB_MagnetTrain
 	dw .SGB_PackPals
 	dw .SGB_TrainerCard
-	dw .SGB_PokedexUnownMode
 	dw .SGB_BillsPC
 	dw .SGB_UnownPuzzle
 	dw .SGB_GamefreakLogo
@@ -252,11 +251,6 @@ SGBLayoutJumptable:
 	ld [wSGBPals + 12], a
 	ld hl, wSGBPals
 	ld de, BlkPacket_Pokedex_PC
-	ret
-
-.SGB_PokedexUnownMode:
-	call .SGB_Pokedex
-	ld de, BlkPacket_PokedexUnownMode
 	ret
 
 .SGB_PokedexSearchOption:

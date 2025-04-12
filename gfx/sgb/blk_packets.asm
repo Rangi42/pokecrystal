@@ -46,11 +46,6 @@ BlkPacket_Pokedex_PC:
 	attr_blk_data %111, 1,1,0, 01,01, 08,08 ; mon: pal 1
 	ds 8, 0
 
-BlkPacket_PokedexUnownMode:
-	attr_blk 1
-	attr_blk_data %111, 1,1,0, 07,05, 13,11 ; unown: pal 1
-	ds 8, 0
-
 BlkPacket_SlotMachine:
 	attr_blk 5
 	attr_blk_data %011, 1,1,0, 00,00, 19,11 ; "3" rows and top of screen: pal 1

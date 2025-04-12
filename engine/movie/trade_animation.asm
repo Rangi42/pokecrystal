@@ -203,11 +203,9 @@ RunTradeAnimScript:
 	call EnableLCD
 	call LoadTradeBallAndCableGFX
 	ld a, [wPlayerTrademonSpecies]
-	ld hl, wPlayerTrademonDVs
 	ld de, vTiles0
 	call TradeAnim_GetFrontpic
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
 	ld de, vTiles0 tile $31
 	call TradeAnim_GetFrontpic
 	ld a, [wPlayerTrademonSpecies]
@@ -807,9 +805,6 @@ TradeAnim_AnimateFrontpic:
 
 TradeAnim_GetFrontpic:
 	push de
-	push af
-	predef GetUnownLetter
-	pop af
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData

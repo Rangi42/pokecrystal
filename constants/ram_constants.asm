@@ -11,7 +11,6 @@ DEF AUTO_INPUT EQU $ff
 	const DEXMODE_NEW
 	const DEXMODE_OLD
 	const DEXMODE_ABC
-	const DEXMODE_UNOWN
 
 ; wMonType::
 	const_def
@@ -231,7 +230,7 @@ DEF GAME_TIME_CAPPED EQU 0
 ; wStatusFlags::
 	const_def
 	const STATUSFLAGS_POKEDEX_F                  ; 0
-	const STATUSFLAGS_UNOWN_DEX_F                ; 1
+	const STATUSFLAGS_UNLOCKED_UNOWNS_F          ; 1
 	const STATUSFLAGS_FLASH_F                    ; 2
 	const STATUSFLAGS_CAUGHT_POKERUS_F           ; 3
 	const STATUSFLAGS_ROCKET_SIGNAL_F            ; 4
@@ -354,14 +353,6 @@ DEF DAYCAREMAN_ACTIVE_F          EQU 7
 ; wDayCareLady::
 DEF DAYCARELADY_HAS_MON_F        EQU 0
 DEF DAYCARELADY_ACTIVE_F         EQU 7
-
-; wUnlockedUnowns::
-	const_def
-	const UNLOCKED_UNOWNS_A_TO_K_F
-	const UNLOCKED_UNOWNS_L_TO_R_F
-	const UNLOCKED_UNOWNS_S_TO_W_F
-	const UNLOCKED_UNOWNS_X_TO_Z_F
-DEF NUM_UNLOCKED_UNOWN_SETS EQU const_value
 
 ; sRTCStatusFlags::
 	const_def 5

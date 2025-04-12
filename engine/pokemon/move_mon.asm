@@ -335,7 +335,7 @@ endr
 	ld bc, PARTYMON_STRUCT_LENGTH - MON_MAXHP
 	call CopyBytes
 	pop hl
-	jr .registerunowndex
+	jr .done
 
 .generatestats
 	pop hl
@@ -343,21 +343,6 @@ endr
 	add hl, bc
 	ld b, FALSE
 	call CalcMonStats
-
-.registerunowndex
-	ld a, [wMonType]
-	and $f
-	jr nz, .done
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr nz, .done
-	ld hl, wPartyMon1DVs
-	ld a, [wPartyCount]
-	dec a
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	predef GetUnownLetter
-	callfar UpdateUnownDex
 
 .done
 	scf ; When this function returns, the carry flag indicates success vs failure.
@@ -456,23 +441,6 @@ AddTempmonToParty:
 	call AddNTimes
 	ld [hl], BASE_HAPPINESS
 .egg
-
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr nz, .done
-	ld hl, wPartyMon1DVs
-	ld a, [wPartyCount]
-	dec a
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	predef GetUnownLetter
-	callfar UpdateUnownDex
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .done
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
-.done
 
 	and a
 	ret
@@ -1041,14 +1009,7 @@ SendMonIntoBox:
 	ld a, [wCurPartySpecies]
 	dec a
 	call SetSeenAndCaughtMon
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr nz, .not_unown
-	ld hl, sBoxMon1DVs
-	predef GetUnownLetter
-	callfar UpdateUnownDex
 
-.not_unown
 	ld hl, sBoxMon1Moves
 	ld de, wTempMonMoves
 	ld bc, NUM_MOVES

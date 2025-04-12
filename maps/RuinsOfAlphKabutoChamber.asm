@@ -63,8 +63,9 @@ RuinsOfAlphKabutoChamberPuzzle:
 .PuzzleComplete:
 	setevent EVENT_RUINS_OF_ALPH_INNER_CHAMBER_TOURISTS
 	setevent EVENT_SOLVED_KABUTO_PUZZLE
-	setflag ENGINE_UNLOCKED_UNOWNS_A_TO_K
+	setflag ENGINE_UNLOCKED_UNOWNS
 	setevent EVENT_RUINS_OF_ALPH_KABUTO_CHAMBER_RECEPTIONIST
+	clearevent EVENT_RUINS_OF_ALPH_OUTSIDE_TOURIST_YOUNGSTERS
 	setmapscene RUINS_OF_ALPH_INNER_CHAMBER, SCENE_RUINSOFALPHINNERCHAMBER_STRANGE_PRESENCE
 	earthquake 30
 	showemote EMOTE_SHOCK, PLAYER, 15
@@ -83,8 +84,6 @@ RuinsOfAlphKabutoChamberPuzzle:
 RuinsOfAlphKabutoChamberScientistScript:
 	faceplayer
 	opentext
-	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .AllUnownCaught
 	checkevent EVENT_WALL_OPENED_IN_KABUTO_CHAMBER
 	iftrue .WallOpen
 	checkevent EVENT_SOLVED_KABUTO_PUZZLE
@@ -100,12 +99,6 @@ RuinsOfAlphKabutoChamberScientistScript:
 
 .WallOpen:
 	writetext RuinsOfAlphKabutoChamberScientistHoleText
-	waitbutton
-	closetext
-	end
-
-.AllUnownCaught:
-	writetext RuinsOfAlphResearchCenterScientist1Text_GotAllUnown
 	waitbutton
 	closetext
 	end

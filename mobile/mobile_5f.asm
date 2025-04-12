@@ -391,26 +391,6 @@ Function17d1f1:
 	ld a, [wCurPartySpecies]
 	dec a
 	call SetSeenAndCaughtMon
-
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr nz, .asm_17d223
-
-	ld hl, wPartyMon1DVs
-	ld a, [wPartyCount]
-	dec a
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	predef GetUnownLetter
-	callfar UpdateUnownDex
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .asm_17d223
-
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
-
-.asm_17d223
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
