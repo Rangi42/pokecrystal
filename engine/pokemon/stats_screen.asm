@@ -830,8 +830,6 @@ OTString:
 	db "OT/@"
 
 StatsScreen_PlaceFrontpic:
-	ld hl, wTempMonDVs
-	predef GetUnownLetter
 	call StatsScreen_GetAnimationParam
 	jr c, .egg
 	and a
@@ -858,36 +856,13 @@ StatsScreen_PlaceFrontpic:
 .AnimateMon:
 	ld hl, wStatsScreenFlags
 	set STATS_SCREEN_ANIMATE_MON, [hl]
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr z, .unown
 	hlcoord 0, 0
 	call PrepMonFrontpic
 	ret
 
-.unown
-	xor a
-	ld [wBoxAlignment], a
-	hlcoord 0, 0
-	call _PrepMonFrontpic
-	ret
-
 .AnimateEgg:
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr z, .unownegg
 	ld a, TRUE
 	ld [wBoxAlignment], a
-	call .get_animation
-	ret
-
-.unownegg
-	xor a
-	ld [wBoxAlignment], a
-	call .get_animation
-	ret
-
-.get_animation
 	ld a, [wCurPartySpecies]
 	call IsAPokemon
 	ret c
