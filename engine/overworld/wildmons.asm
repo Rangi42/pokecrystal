@@ -324,8 +324,8 @@ ChooseWildEncounter:
 	cp UNOWN
 	jr nz, .done
 
-	ld a, [wUnlockedUnowns]
-	and a
+	ld a, [wStatusFlags]
+	and 1 << STATUSFLAGS_UNLOCKED_UNOWNS_F
 	jr z, .nowildbattle
 
 .done
